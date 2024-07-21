@@ -25,7 +25,6 @@ model User {
   updatedAt DateTime  @updatedAt
   referralCode  String  @unique
   Points        Points[]
-  Tickets           Ticket[]
   DiscountCoupons DiscountCoupon[] @relation("UserDiscounts")
 }
 
@@ -50,28 +49,6 @@ model PointsExpiry {
   Points          Points    @relation(fields: [pointsId], references: [pointsId])
 }
 
-model Event {
-  eventId           Int          @id @default(autoincrement())
-  eventName         String
-  eventDescription  String
-  organizerId       Int
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  Tickets           Ticket[]
-}
-
-model Ticket {
-  ticketId         Int       @id @default(autoincrement())
-  eventId          Int
-  userId           Int
-  ticketPrice      Float
-  registerDate     DateTime
-  discountCouponCode   String?
-  couponExpiryDate DateTime?
-  Event            Event     @relation(fields: [eventId], references: [eventId])
-  User             User      @relation(fields: [userId], references: [userId])
-  DiscountCoupon   DiscountCoupon? @relation("DiscountCouponTickets", fields: [discountCouponCode], references: [code])   
-}
 
 model DiscountCoupon {
   code             String    @id
@@ -79,6 +56,5 @@ model DiscountCoupon {
   discountAmount   Float
   expiryDate       DateTime
   User             User      @relation("UserDiscounts", fields: [userId], references: [userId])
-Tickets          Ticket[]  @relation("DiscountCouponTickets")
 }
 

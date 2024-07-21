@@ -1,65 +1,104 @@
-import React from 'react';
+"use client"; // Add this line at the top
+
+import React, { useState } from 'react';
 
 const SignUp: React.FC = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
+  const [referralCode, setReferralCode] = useState('');
+
+  const generateReferralCode = () => {
+    // Simple referral code generation logic
+    return 'REF' + Math.random().toString(36).substr(2, 9).toUpperCase();
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Simulate account creation
+    setReferralCode(generateReferralCode());
+  };
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <div className="w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+    <div className="flex min-h-screen bg-gray-100 items-center justify-center">
+      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold mb-6 text-center">Sign up</h2>
-        <form>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-              Email address
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
+        {referralCode ? (
+          <div className="text-center">
+            <h3 className="text-2xl font-bold">Account Created!</h3>
+            <p>Your referral code is:</p>
+            <div className="text-xl font-mono bg-gray-200 p-2 rounded">
+              {referralCode}
+            </div>
           </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <button
-              type="submit"
-              className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Sign up
-            </button>
-          </div>
-          <div className="mt-4 text-center">
-            <span>or</span>
-          </div>
-          <button className="mt-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow w-full">
-            Email me a sign-up link
-          </button>
-          <button className="mt-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow w-full flex items-center justify-center">
-            <img src="/google-icon.svg" alt="Google" className="w-5 h-5 mr-2" />
-            Sign up with Google
-          </button>
-          <div className="flex justify-between mt-4">
-            <button className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-1/2 mr-2">
-              <i className="fab fa-facebook-f"></i>
-            </button>
-            <button className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-1/2 ml-2">
-              <i className="fab fa-apple"></i>
-            </button>
-          </div>
-          <div className="text-center mt-4">
-            <a href="/login" className="text-blue-500 hover:text-blue-700">
-              Log in
-            </a>
-          </div>
-        </form>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                Email address
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="role">
+                Role
+              </label>
+              <select
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              >
+                <option value="">Select a role</option>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between">
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Sign up
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );
